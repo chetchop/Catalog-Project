@@ -45,14 +45,14 @@ def newItem(category_name):
     elif request.method == 'POST':
         return 'This will add in a new item in the category %s' % category_name
 
-@app.route('/catalog/<string:category_name>/<string:item_name/edit>', methods=['GET', 'POST'])
+@app.route('/catalog/<string:category_name>/<string:item_name>/edit', methods=['GET', 'POST'])
 def editItem(category_name, item_name):
     if request.method == 'GET':
         return 'This will return the template for editing the %s item in category %s' % (item_name, category_name)
     elif request.method == 'POST':
         return 'This will edit the %s item in the category %s' % (item_name, category_name)
 
-@app.route('/catalog/<string:category_name>/<string:item_name/delete>', methods=['GET', 'POST'])
+@app.route('/catalog/<string:category_name>/<string:item_name>/delete', methods=['GET', 'POST'])
 def deleteItem(category_name, item_name):
     if request.method == 'GET':
         return 'This will return the template for deleting the %s item in category %s' % (item_name, category_name)
