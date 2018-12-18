@@ -1,0 +1,23 @@
+<div class="Categories">
+    <h1>Categories</h1>
+    {% for c in categories %}
+
+    <a href = "{{url_for('showCategory', category_name = c.name)}}">{{c.name}}</a>
+
+    <br>
+    {% endfor %}
+</div>
+
+<div class="Items">
+    <h1>{{categoryName}} Items ({{numberOfItems}} Items)</h1>
+    {% for i in items %}
+
+    <a href = "{{url_for('showItem', category_name = categoryName, item_name = i.name)}}">{{i.name}}</a>
+
+    <br>
+    {% endfor %}
+
+    <a href = "{{url_for('newItem', category_name = categoryName)}}">Add new Item</a>
+
+</div>
+

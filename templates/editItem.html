@@ -1,0 +1,19 @@
+<h2>Edit Item</h2>
+<h3>{{selectedItem.name}}</h3>
+<br>
+<form method="post">
+    Name:
+    <input type='text' name='name' value='{{selectedItem.name}}'>
+    <br>
+    Description:
+    <input type='text' name='description' value='{{selectedItem.description}}'>
+    <br>
+    Category
+    <select name='category' class='selectpicker form-control'>
+        {% for c in categories %}
+            <option value="{{c.name}}">{{c.name}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type='submit' value='Edit'>
+</form>

@@ -32,7 +32,7 @@ class category(Base):
             'name': self.name
         }
 
-
+     
 # table containing items
 class categoryItem(Base):
     __tablename__ = 'categoryItem'

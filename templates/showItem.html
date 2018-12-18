@@ -1,0 +1,6 @@
+<h1>{{selectedItem.name}} : ({{categoryName}})</h1>
+{{selectedItem.description}}
+<br>
+<a href = "{{url_for('editItem', category_name = categoryName, item_name = selectedItem.name)}}">Edit</a>
+<br>
+<a href = "{{url_for('deleteItem', category_name = categoryName, item_name = selectedItem.name)}}">Delete</a>
