@@ -1,19 +1,32 @@
-<h2>Edit Item</h2>
-<h3>{{selectedItem.name}}</h3>
-<br>
-<form method="post">
-    Name:
-    <input type='text' name='name' value='{{selectedItem.name}}'>
-    <br>
-    Description:
-    <input type='text' name='description' value='{{selectedItem.description}}'>
-    <br>
-    Category
-    <select name='category' class='selectpicker form-control'>
-        {% for c in categories %}
-            <option value="{{c.name}}">{{c.name}}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <input type='submit' value='Edit'>
-</form>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="main">
+    <div class="row2">
+        <h2>Edit {{selectedItem.name}}</h2>
+    </div>
+    <div class="row3">
+        <form method="POST">
+            Name:
+            <br>
+            <input type="text" name="name" id="newName" value="fdgajs">
+            <br>
+            <br>
+            Description:
+            <br>
+            <textarea name="description" id="newDescription" value="fdgajs"></textarea></textarea>
+            <br>
+            <br>
+            Category
+            <select name='category' class='selectpicker form-control'>
+            {% for c in categories %}
+                <option value="{{c.name}}">{{c.name}}</option>
+            {% endfor %}
+            </select>
+            <br>
+            <br>
+            <input type="submit" value="Edit">
+        </form>
+    </div>
+</div>
+{% endblock %}

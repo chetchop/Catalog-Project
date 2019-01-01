@@ -1,5 +1,13 @@
-Are you sure you want to delete {{itemName}} from {{categoryName}}
-<br>
-<form method='post'>
-    <input type='submit' value='Delete'></input>
-</form>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="main">
+    <div class="row4">
+        <h2>Are you sure you want to delete {{itemName}} from {{categoryName}}</h2>
+        <br>
+        <form method='post'>
+            <input type='submit' value='Delete' class="button"></input>
+        </form>
+    </div>
+</div>
+{% endblock %}

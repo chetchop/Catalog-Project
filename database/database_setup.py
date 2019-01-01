@@ -3,6 +3,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
+
 Base = declarative_base()
 
 # table containing users
@@ -51,8 +52,9 @@ class categoryItem(Base):
         return {
             'id': self.id,
             'name': self.name, 
-            'description': self.description
+            'description': self.description,
         }
+
 
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.create_all(engine)

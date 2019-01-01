@@ -1,12 +1,25 @@
-<h1>Add a new item: {{categoryName}}</h1>
-<form method='post'>
-    Name:
-    <input type='text' name='name'>
-    <br>
-    Description:
-    <input type='text' name='description'>
-    <br>
-    <input type='submit' value='Add'>
-</form>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="main">
+    <div class="row2">
+        <h2>Add a new item to the {{categoryName}} category</h2>
+    </div>
+    <div class="row3">
+        <form method="POST">
+            Name:
+            <br>
+            <input type="text" name="name" id="newName">
+            <br>
+            <br>
+            Description:
+            <br>
+            <textarea name="description" id="newDescription"></textarea></textarea>
+            <br>
+            <input type="submit" value="Add">
+        </form>
+    </div>
+</div>
+{% endblock %}
 
 

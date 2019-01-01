@@ -2,6 +2,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
+
 # Access to database tables
 from database_setup import Base, user, category, categoryItem
 
@@ -64,9 +66,18 @@ def deleteAllItems():
         session.delete(i)
     session.commit()
 
-
-# Initial 
 '''
+users = session.query(user).filter_by(email='chet.chopra585@gmail.com')
+for u in users:
+    session.delete(u)
+
+session.commit()
+'''
+
+
+'''
+# Initial 
+
 createUser('John Doan', 'JDoan4321@gamil.com','https://encrypted-tbn0.gstatic.com/images?q= \
 tbn:ANd9GcT3ebeIeow4tnRTtlrzVKnGpFEXbNNWcOpXK8R_qodf0aT7aFDN')
 

@@ -10,15 +10,15 @@
                 <br> 
                 <br> 
             {% endfor %}
+            <a href='{{url_for('newCategory') }}' id="styledLink">Add Category</a>
         </div>
         <div class="column2" style="background-color:#bbb;">
-            <h2>{{categoryName}} Items</h2>
-            {% for i in items %}
-                <a href='{{url_for('showItem', category_name=categoryName, item_name=i.name ) }}' id="styledLink2">{{i.name}}</a>
+            <h2>Recent Items</h2>
+            {% for i in recentItems %}
+                <a href='{{url_for('showItem', category_name=i.category.name, item_name=i.name ) }}' id="styledLink2">{{i.name}} : {{i.category.name}}</a>
                 <br>
                 <br>
             {% endfor %}
-            <a href='{{url_for('newItem', category_name=categoryName) }}' id="styledLink">Add Item</a>
         </div>
     </div>
 </div>

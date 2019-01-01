@@ -6,9 +6,6 @@
         <div class="column3" style="background-color:#bbb;">
             <h2>{{selectedItem.name}} : {{categoryName}}</h2>
             <p>{{selectedItem.description}}</p>
-            <br>
-            <a href = "{{url_for('editItem', category_name = categoryName, item_name = selectedItem.name)}}" id="styledLink">Edit</a>
-            <a href = "{{url_for('deleteItem', category_name = categoryName, item_name = selectedItem.name)}}" id="styledLink">Delete</a>
         </div>
     </div>
 </div>

@@ -14,8 +14,10 @@ class DBConnect:
 
     def getAllCategories(self):
         return self.session.query(category).all()
-        
 
+    def getAllItems(self):
+        return self.session.query(categoryItem).all()
+        
     def getAllRecentItems(self):
         recentItems = []
         allCategories = self.getAllCategories()
@@ -91,6 +93,23 @@ class DBConnect:
                     result['used'] = True
                     result['category'] = i.category.name
         return result
+
+    def createUser(self, username, email, picture):
+        newUser = user(name=username, email=email, picture=picture)
+        self.session.add(newUser)
+        self.session.commit()
+
+    def getUserByID(self, ID):
+        return self.session.query(user).filter_by(id=ID).one()
+
+    def getUserIDByEmail(self, email):
+        try:
+            foundUser = self.session.query(user).filter_by(email=email).one()
+            return foundUser.id
+        except:
+            return None
+
+
 
 
 
