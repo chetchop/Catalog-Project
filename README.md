@@ -19,13 +19,17 @@ This is a small catalog web application. Users can login via Google and create/m
 ## Required 
 - [Vagrant](https://www.vagrantup.com/)
 - [This repo](https://github.com/chetchop/Catalog-Project)
+- [Udacity Vagrantfile](https://github.com/udacity/fullstack-nanodegree-vm)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 ## Getting Started
 
 - Install Vagrant and VirtualBox
-- Clone this repo 
-- Navigate to the Project 2 folder via terminal/cmd/etc and you will find a vagrant file
+- Clone the Udacity vagrantfile
+- Navigate to the vagrant folder and delete everything but the vagrant file
+- While in this directory clone [This repo](https://github.com/chetchop/Catalog-Project)
+- Now you should have a directory called `catalog=project` within your vagrant folder
+- Navigate to the vagrant file within the vagrant folder via terminal/cmd/etc
 - Run `vagrant up` to configure and run the virtual machine, 
 - Run `vagrant ssh` to ssh into the VM
 - To run the application, in the VM, navigate to /vagrant to access the shared files
