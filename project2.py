@@ -2,15 +2,6 @@
 #
 # A Catalog webapp that allows users to manage items witin categories
 
-# Import in object to CRUD data
-from dbconnect import DBConnect
-
-# Used to create a flow object from the client_secrets file
-from oauth2client.client import flow_from_clientsecrets
-
-# Used to catch errors when exchanging an authorization code for an accesstoken
-from oauth2client.client import FlowExchangeError
-
 # General python imports
 import sys
 import os
@@ -20,18 +11,26 @@ import requests
 import json
 import httplib2
 
+# Used to create a flow object from the client_secrets file
+from oauth2client.client import flow_from_clientsecrets
+
+# Used to catch errors when exchanging an authorization code for an accesstoken
+from oauth2client.client import FlowExchangeError
+
 # Flask Imports
-from flask import Flask, request, render_template,
-redirect, url_for, flash, session, jsonify, make_response
+from flask import Flask, request, render_template
+from flask import redirect, url_for, flash, session, jsonify, make_response
 
 # Allows access to the database folder
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/database")
+# Import in object to CRUD data
+from dbconnect import DBConnect
 
 app = Flask(__name__)
 
 # Loads in file containing client secret
-CLIENT_ID = json.loads(open('secret/client_secrets. \
-json', 'r').read())['web']['client_id']
+CLIENT_ID = json.loads(open('secret/client_secrets.json',
+                            'r').read())['web']['client_id']
 
 
 # Renders login page and ensures that the login request is coming from the
@@ -61,23 +60,23 @@ def gconnect():
     try:
         # Create oauth flow object and adds client secret key info to
         # that object
-        oauth_flow = flow_from_clientsecrets('secret/client_secrets. \
-        json', scope='')
+        oauth_flow = flow_from_clientsecrets('secret/client_secrets.json',
+                                             scope='')
         # Specify that this the one time code flow this server sends off
         oauth_flow.redirect_uri = 'postmessage'
         # Init exchange
         credentials = oauth_flow.step2_exchange(code)
     # Handle the case where an error occurs during the exchange
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to upgrade the \
+        response = make_response(json.dumps('Failed to upgrade the\
         authorization code'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     # Check to see if there is a valid access token inside of the
     # returned credentials
     access_token = credentials.access_token
-    url = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_ \
-    token=%s' % access_token
+    url = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'\
+          % access_token
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     if result.get('error') is not None:
@@ -88,13 +87,13 @@ def gconnect():
     # by the google api server
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
-        response = make_response(json.dumps('Token user ID does not \
+        response = make_response(json.dumps('Token user ID does not\
         match given user ID'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     # Compare client IDs
     if result['issued_to'] != CLIENT_ID:
-        response = make_response(json.dumps('Token client ID does not \
+        response = make_response(json.dumps('Token client ID does not\
         match the apps ID'), 401)
         print('Token client ID does not match the apps ID')
         response.headers['Content-Type'] = 'application/json'
@@ -104,7 +103,7 @@ def gconnect():
     stored_credentials = session.get('credentials')
     stored_gplus_id = session.get('gplus_id')
     if stored_credentials is not None and stored_gplus_id == gplus_id:
-        response = make_response(json.dumps('Current user is \
+        response = make_response(json.dumps('Current user is\
         already logged in'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -126,7 +125,7 @@ def gconnect():
     db = DBConnect()
     userID = db.getUserIDByEmail(session['email'])
     if userID is None:
-        db.createUser(session['username'], session[' \
+        db.createUser(session['username'], session['\
         email'], session['picture'])
         userID = db.getUserIDByEmail(session['email'])
 
@@ -145,7 +144,7 @@ def gdisconnect():
     access_token = session.get('credentials')
     if access_token is None:
         print('Access token is none')
-        return render_template('disconnected.html', message='Current \
+        return render_template('disconnected.html', message='Current\
         user not connected')
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
@@ -157,7 +156,7 @@ def gdisconnect():
         del session['username']
         del session['email']
         del session['picture']
-        return render_template('disconnected.html', message='You have \
+        return render_template('disconnected.html', message='You have\
         been successfully disconnected!')
     else:
         # If not then the access token is likely expired so we
@@ -169,9 +168,9 @@ def gdisconnect():
         del session['picture']
         result = h.request(url, 'GET')[0]
         if result['status'] == '200':
-            return render_template('disconnected.html', message='You have \
+            return render_template('disconnected.html', message='You have\
             been successfully disconnected!')
-        return render_template('disconnected.html', message='Disconnect \
+        return render_template('disconnected.html', message='Disconnect\
         Failed!')
 
 
@@ -182,8 +181,8 @@ def catalog():
     db = DBConnect()
     categories = db.getAllCategories()
     recentItems = db.getAllRecentItems()
-    return render_template('categories. \
-    html', categories=categories, recentItems=recentItems)
+    return render_template('categories.\
+html', categories=categories, recentItems=recentItems)
 
 
 # Add in a new category
@@ -203,7 +202,7 @@ def newCategory():
                 return redirect(url_for('catalog'))
                 # If the category was not added, redirect the
                 # user to the error page
-            return redirect(url_for('error', error='This name \
+            return redirect(url_for('error', error='This name\
             was already used'))
         return redirect(url_for('error', error='You need to enter a name'))
 
@@ -236,10 +235,10 @@ def showItem(category_name, item_name):
     userEmail = session.get('email')
     userID = db.getUserIDByEmail(userEmail)
     if userID != selectedItem.user.id:
-        return render_template('publicShowItem.html \
-        ', selectedItem=selectedItem, categoryName=category_name)
-    return render_template('showItem.html \
-    ', selectedItem=selectedItem, categoryName=category_name)
+        return render_template('publicShowItem.html\
+', selectedItem=selectedItem, categoryName=category_name)
+    return render_template('showItem.html\
+', selectedItem=selectedItem, categoryName=category_name)
 
 
 # Edit the name of a selected category
@@ -249,7 +248,7 @@ def editCategory(category_name):
         return 'Getting template for editing category :%s' % category_name
 
     if request.method == 'POST':
-        return 'Editing category :%s and redirecting \
+        return 'Editing category :%s and redirecting\
         to catalog page' % category_name
 
 
@@ -269,11 +268,11 @@ def newItem(category_name):
                 category = db.getCategoryByName(category_name)
                 userID = db.getUserIDByEmail(session['email'])
                 db.addItem(name, description, category.id, userID)
-                return redirect(url_for('showItem \
-                ', category_name=category_name, item_name=name))
-            return redirect(url_for('error', error='This \
+                return redirect(url_for('showItem\
+', category_name=category_name, item_name=name))
+            return redirect(url_for('error', error='This\
             item name has already been used'))
-        return redirect(url_for('error', error='You need to enter \
+        return redirect(url_for('error', error='You need to enter\
         both a name and description'))
 
     if request.method == 'GET':
@@ -284,7 +283,7 @@ def newItem(category_name):
 
 
 # Edit an Item
-@app.route('/catalog/<string:category_name>/<string:item_name> \
+@app.route('/catalog/<string:category_name>/<string:item_name>\
 /edit', methods=['GET', 'POST'])
 def editItem(category_name, item_name):
     db = DBConnect()
@@ -296,23 +295,25 @@ def editItem(category_name, item_name):
         if name and description and categoryName:
             category = db.getCategoryByName(categoryName)
             db.editItem(item, name, description, category.id)
-            return redirect(url_for('showItem \
-            ', category_name=category.name, item_name=name))
+            return redirect(url_for('showItem',
+                                    category_name=category.name,
+                                    item_name=name))
 
     if request.method == 'GET':
         # Authorization check before serving the edit page
         userEmail = session.get('email')
         userID = db.getUserIDByEmail(userEmail)
         if userID != item.user.id:
-            return redirect(url_for('error', error='You are not \
+            return redirect(url_for('error', error='You are not\
             authorized to edit this item'))
         categories = db.getAllCategories()
-        return render_template('editItem.html \
-        ', selectedItem=item, categories=categories)
+        return render_template('editItem.html',
+                               selectedItem=item,
+                               categories=categories)
 
 
 # Delete an Item
-@app.route('/catalog/<string:category_name>/<string:item_name> \
+@app.route('/catalog/<string:category_name>/<string:item_name>\
 /delete', methods=['GET', 'POST'])
 def deleteItem(category_name, item_name):
     db = DBConnect()
@@ -326,10 +327,11 @@ def deleteItem(category_name, item_name):
         userEmail = session.get('email')
         userID = db.getUserIDByEmail(userEmail)
         if userID != item.user.id:
-            return redirect(url_for('error', error='You are not \
+            return redirect(url_for('error', error='You are not\
             authorized to delete this item'))
-        return render_template('deleteItem.html \
-        ', categoryName=category_name, itemName=item_name)
+        return render_template('deleteItem.html',
+                               categoryName=category_name,
+                               itemName=item_name)
 
 
 # Error page
@@ -350,8 +352,8 @@ def catalogJSON():
     total = {'Category': []}
     for c in categories:
         items = db.getItemsByCategory(c.name)
-        total['Category'].append({'id': c.id, 'name\
-        ': c.name, 'items': [i.serialize for i in items]})
+        total['Category'].append({'id': c.id, 'name': c.name,
+                                 'items': [i.serialize for i in items]})
     return jsonify(total)
 
 

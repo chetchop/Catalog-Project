@@ -1,10 +1,15 @@
-# Imports to allow use of SqlAlchemy 
+#!/usr/bin/env python3
+#
+# Database setup for a catalog application
+
+# Imports to allow use of SqlAlchemy
 from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 
 Base = declarative_base()
+
 
 # table containing users
 class user(Base):
@@ -33,7 +38,7 @@ class category(Base):
             'name': self.name
         }
 
-     
+
 # table containing items
 class categoryItem(Base):
     __tablename__ = 'categoryItem'
@@ -51,13 +56,10 @@ class categoryItem(Base):
     def serialize(self):
         return {
             'id': self.id,
-            'name': self.name, 
+            'name': self.name,
             'description': self.description,
         }
 
 
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('sqlite:///database/catalog.db')
 Base.metadata.create_all(engine)
-
-
-
