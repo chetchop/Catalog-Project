@@ -3,8 +3,6 @@
 # A Catalog webapp that allows users to manage items witin categories
 
 # General python imports
-import sys
-import os
 import random
 import string
 import requests
@@ -21,8 +19,6 @@ from oauth2client.client import FlowExchangeError
 from flask import Flask, request, render_template
 from flask import redirect, url_for, flash, session, jsonify, make_response
 
-# Allows access to the database folder
-sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/database")
 # Import in object to CRUD data
 from dbconnect import DBConnect
 
@@ -125,12 +121,12 @@ def gconnect():
     db = DBConnect()
     userID = db.getUserIDByEmail(session['email'])
     if userID is None:
-        db.createUser(session['username'], session['\
-        email'], session['picture'])
+        db.createUser(session['username'],
+                      session['email'],
+                      session['picture'])
         userID = db.getUserIDByEmail(session['email'])
 
     session['user_id'] = userID
-
     output = ''
     output += '<h1>Welcome, '
     output += session['username']

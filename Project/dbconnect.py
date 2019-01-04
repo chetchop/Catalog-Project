@@ -12,7 +12,7 @@ from database_setup import Base, user, category, categoryItem
 # Class definition
 class DBConnect:
     def __init__(self):
-        engine = create_engine('sqlite:///database/catalog.db')
+        engine = create_engine('sqlite:///catalog.db')
         Base.metadata.bind = engine
         DBSession = sessionmaker(bind=engine)
         self.session = DBSession()

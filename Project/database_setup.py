@@ -61,5 +61,5 @@ class categoryItem(Base):
         }
 
 
-engine = create_engine('sqlite:///database/catalog.db')
+engine = create_engine('sqlite:///catalog.db')
 Base.metadata.create_all(engine)
